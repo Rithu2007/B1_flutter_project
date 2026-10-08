@@ -1,0 +1,96 @@
+import 'package:flutter/material.dart';
+import '../models/category.dart';
+
+final List<ProductCategory> mockCategories = [
+  const ProductCategory(
+    id: 'fruits',
+    name: 'Fruits',
+    icon: Icons.apple,
+    color: Color(0xFFE53935),
+    bgColor: Color(0xFFFFEBEE),
+  ),
+  const ProductCategory(
+    id: 'vegetables',
+    name: 'Vegetables',
+    icon: Icons.eco,
+    color: Color(0xFF2E7D32),
+    bgColor: Color(0xFFE8F5E9),
+  ),
+  const ProductCategory(
+    id: 'dairy',
+    name: 'Dairy',
+    icon: Icons.egg_outlined,
+    color: Color(0xFF1976D2),
+    bgColor: Color(0xFFE3F2FD),
+  ),
+  const ProductCategory(
+    id: 'bakery',
+    name: 'Bakery',
+    icon: Icons.bakery_dining,
+    color: Color(0xFFD84315),
+    bgColor: Color(0xFFFBE9E7),
+  ),
+  const ProductCategory(
+    id: 'beverages',
+    name: 'Beverages',
+    icon: Icons.local_cafe,
+    color: Color(0xFF6D4C41),
+    bgColor: Color(0xFFEFEBE9),
+  ),
+  const ProductCategory(
+    id: 'snacks',
+    name: 'Snacks',
+    icon: Icons.fastfood,
+    color: Color(0xFFF57C00),
+    bgColor: Color(0xFFFFF3E0),
+  ),
+  const ProductCategory(
+    id: 'staples',
+    name: 'Staples',
+    icon: Icons.grain,
+    color: Color(0xFF8D6E63),
+    bgColor: Color(0xFFF5F0EA),
+  ),
+  const ProductCategory(
+    id: 'household',
+    name: 'Household',
+    icon: Icons.home_repair_service,
+    color: Color(0xFF00897B),
+    bgColor: Color(0xFFE0F2F1),
+  ),
+  const ProductCategory(
+    id: 'personal_care',
+    name: 'Personal Care',
+    icon: Icons.face_retouching_natural,
+    color: Color(0xFF8E24AA),
+    bgColor: Color(0xFFF3E5F5),
+  ),
+  const ProductCategory(
+    id: 'frozen_foods',
+    name: 'Frozen Foods',
+    icon: Icons.ac_unit,
+    color: Color(0xFF0288D1),
+    bgColor: Color(0xFFE1F5FE),
+  ),
+  const ProductCategory(
+    id: 'baby_care',
+    name: 'Baby Care',
+    icon: Icons.child_care,
+    color: Color(0xFFE91E63),
+    bgColor: Color(0xFFFCE4EC),
+  ),
+  const ProductCategory(
+    id: 'cleaning',
+    name: 'Cleaning',
+    icon: Icons.cleaning_services,
+    color: Color(0xFF00ACC1),
+    bgColor: Color(0xFFE0F7FA),
+  ),
+  const ProductCategory(
+    id: 'pet_supplies',
+    name: 'Pet Supplies',
+    icon: Icons.pets,
+    color: Color(0xFF5D4037),
+    bgColor: Color(0xFFEFEBE9),
+  ),
+];
