@@ -38,12 +38,17 @@ class OrdersScreen extends StatelessWidget {
           ),
         ),
         body: SafeArea(
-          child: TabBarView(
-            children: [
-              _buildOrdersList(context, orderProvider.allOrders, isDark),
-              _buildOrdersList(context, orderProvider.activeOrders, isDark),
-              _buildOrdersList(context, orderProvider.completedOrders, isDark),
-            ],
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 800),
+              child: TabBarView(
+                children: [
+                  _buildOrdersList(context, orderProvider.allOrders, isDark),
+                  _buildOrdersList(context, orderProvider.activeOrders, isDark),
+                  _buildOrdersList(context, orderProvider.completedOrders, isDark),
+                ],
+              ),
+            ),
           ),
         ),
       ),

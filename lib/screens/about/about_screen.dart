@@ -15,7 +15,10 @@ class AboutScreen extends StatelessWidget {
         title: const Text('About Local Grocery'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: SingleChildScrollView(
           padding: const EdgeInsets.all(24),
           child: Column(
             children: [
@@ -188,8 +191,10 @@ class AboutScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  ),
+);
+}
 
   Widget _buildInfoRow(String label, String value, bool isDark) {
     return Row(

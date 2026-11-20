@@ -80,7 +80,10 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         title: const Text('Add Delivery Address'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 700),
+            child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Form(
             key: _formKey,
@@ -244,6 +247,8 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

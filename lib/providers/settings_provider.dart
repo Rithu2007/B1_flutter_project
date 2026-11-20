@@ -72,12 +72,13 @@ class SettingsProvider extends ChangeNotifier {
   }
 
   void addAddress(Address address) {
-    if (address.isDefault || _addresses.isEmpty) {
+    final shouldBeDefault = address.isDefault || _addresses.isEmpty;
+    if (shouldBeDefault) {
       for (int i = 0; i < _addresses.length; i++) {
         _addresses[i] = _addresses[i].copyWith(isDefault: false);
       }
     }
-    _addresses.add(address);
+    _addresses.add(shouldBeDefault ? address.copyWith(isDefault: true) : address);
     StorageService.saveAddresses(_addresses);
     notifyListeners();
   }

@@ -35,7 +35,10 @@ class NotificationsScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: notifs.isEmpty
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: notifs.isEmpty
             ? const Center(
                 child: EmptyStateWidget(
                   icon: Icons.notifications_off_outlined,
@@ -168,6 +171,8 @@ class NotificationsScreen extends StatelessWidget {
                   );
                 },
               ),
+          ),
+        ),
       ),
     );
   }

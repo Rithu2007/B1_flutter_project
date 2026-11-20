@@ -65,7 +65,10 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).then((_) {
+      oldPasswordController.dispose();
+      newPasswordController.dispose();
+    });
   }
 
   void _showDeliveryInstructionsDialog(BuildContext context) {
@@ -108,7 +111,9 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ).then((_) {
+      instructionsController.dispose();
+    });
   }
 
   void _showLanguageSelector(BuildContext context) {
@@ -171,7 +176,10 @@ class SettingsScreen extends StatelessWidget {
         title: const Text('Settings'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,7 +422,9 @@ class SettingsScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 
   BoxDecoration _cardDecoration(bool isDark) {

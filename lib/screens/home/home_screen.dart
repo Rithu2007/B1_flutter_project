@@ -40,7 +40,9 @@ class HomeScreen extends StatelessWidget {
     final settingsProvider = context.watch<SettingsProvider>();
     final productsProvider = context.watch<ProductsProvider>();
 
-    final userName = userProvider.currentUser?.name.split(' ').first ?? 'Thanuj';
+    final userName = (userProvider.currentUser?.name.isNotEmpty ?? false)
+        ? userProvider.currentUser!.name.split(' ').first
+        : 'Thanuj';
     final popularProducts = productsProvider.popularProducts;
     final dealProducts = productsProvider.dealsProducts;
     final unreadNotifs = settingsProvider.unreadNotificationsCount;
@@ -401,7 +403,9 @@ class HomeScreen extends StatelessWidget {
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 14),
-                    itemCount: 8, // First 8 core categories
+                    itemCount: mockCategories.length < 8
+                        ? mockCategories.length
+                        : 8, // Core categories
                     itemBuilder: (context, index) {
                       final category = mockCategories[index];
                       return CategoryCard(
@@ -473,7 +477,7 @@ class HomeScreen extends StatelessWidget {
 
                 // Deals Horizontal Scroll
                 SizedBox(
-                  height: 236,
+                  height: 260,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
                     padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -485,11 +489,14 @@ class HomeScreen extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 6),
                         child: ProductCard(
                           product: product,
+                          heroTag: 'deals_prod_${product.id}',
                           onTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    ProductDetailsScreen(product: product),
+                                builder: (_) => ProductDetailsScreen(
+                                  product: product,
+                                  heroTag: 'deals_prod_${product.id}',
+                                ),
                               ),
                             );
                           },
@@ -500,7 +507,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
 
-                // Popular Near You Section (2-Column Grid)
+                // Popular Near You Section
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: Row(
@@ -530,16 +537,16 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 12),
 
-                // Popular Products Grid
+                // Popular Products Grid (Responsive across Mobile, Tablet, Desktop)
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 18),
                   child: GridView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.72,
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 220,
+                      childAspectRatio: 0.66,
                       crossAxisSpacing: 12,
                       mainAxisSpacing: 14,
                     ),
@@ -548,11 +555,14 @@ class HomeScreen extends StatelessWidget {
                       final product = popularProducts[index];
                       return ProductCard(
                         product: product,
+                        heroTag: 'popular_prod_${product.id}',
                         onTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (_) =>
-                                  ProductDetailsScreen(product: product),
+                              builder: (_) => ProductDetailsScreen(
+                                product: product,
+                                heroTag: 'popular_prod_${product.id}',
+                              ),
                             ),
                           );
                         },

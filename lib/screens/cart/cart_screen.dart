@@ -72,51 +72,54 @@ class CartScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: cart.isEmpty
-            ? Center(
-                child: EmptyStateWidget(
-                  icon: Icons.shopping_basket_outlined,
-                  title: 'Your cart is empty',
-                  description:
-                      'Start adding your favorite groceries, fruits, and dairy to get lightning fast delivery.',
-                  buttonText: 'Start Shopping',
-                  onButtonPressed: onStartShopping,
-                ),
-              )
-            : Column(
-                children: [
-                  // Free delivery banner if under threshold
-                  if (cart.subtotal < AppConstants.freeDeliveryThreshold)
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 10,
-                      ),
-                      color: isDark
-                          ? AppColors.secondary.withAlpha(40)
-                          : const Color(0xFFFEF3C7),
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Icons.electric_moped_rounded,
-                            size: 20,
-                            color: Color(0xFFD97706),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 900),
+            child: cart.isEmpty
+                ? Center(
+                    child: EmptyStateWidget(
+                      icon: Icons.shopping_basket_outlined,
+                      title: 'Your cart is empty',
+                      description:
+                          'Start adding your favorite groceries, fruits, and dairy to get lightning fast delivery.',
+                      buttonText: 'Start Shopping',
+                      onButtonPressed: onStartShopping,
+                    ),
+                  )
+                : Column(
+                    children: [
+                      // Free delivery banner if under threshold
+                      if (cart.subtotal < AppConstants.freeDeliveryThreshold)
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 10,
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Text(
-                              'Add ${AppConstants.currency}${(AppConstants.freeDeliveryThreshold - cart.subtotal).toInt()} more to get FREE Delivery!',
-                              style: const TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w700,
-                                color: Color(0xFF92400E),
+                          color: isDark
+                              ? AppColors.secondary.withAlpha(40)
+                              : const Color(0xFFFEF3C7),
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Icons.electric_moped_rounded,
+                                size: 20,
+                                color: Color(0xFFD97706),
                               ),
-                            ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  'Add ${AppConstants.currency}${(AppConstants.freeDeliveryThreshold - cart.subtotal).ceil()} more to get FREE Delivery!',
+                                  style: const TextStyle(
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.w700,
+                                    color: Color(0xFF92400E),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    )
+                        )
                   else
                     Container(
                       width: double.infinity,
@@ -356,7 +359,7 @@ class CartScreen extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              '${AppConstants.currency}${cart.subtotal.toInt()}',
+                              '${AppConstants.currency}${(cart.discountAmount > 0 ? cart.originalSubtotal : cart.subtotal).toInt()}',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w600,
@@ -462,6 +465,8 @@ class CartScreen extends StatelessWidget {
                   ),
                 ],
               ),
+          ),
+        ),
       ),
     );
   }

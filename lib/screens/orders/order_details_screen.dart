@@ -32,7 +32,10 @@ class OrderDetailsScreen extends StatelessWidget {
         title: Text('Order #${order.id}'),
       ),
       body: SafeArea(
-        child: Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -453,6 +456,8 @@ class OrderDetailsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

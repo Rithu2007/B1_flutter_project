@@ -32,10 +32,12 @@ class OrderConfirmationScreen extends StatelessWidget {
         backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
         body: SafeArea(
           child: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 600),
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // Animated / Big Checkmark Circle
                   Container(
@@ -243,6 +245,7 @@ class OrderConfirmationScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

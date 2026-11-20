@@ -38,6 +38,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       ),
       builder: (ctx) {
         final addresses = settings.addresses;
+        final currentActive = _selectedAddress ?? settings.defaultAddress;
         return Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -56,36 +57,55 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                     label: const Text('Add New'),
                     onPressed: () {
                       Navigator.of(ctx).pop();
-                      Navigator.of(context).push(
+                      Navigator.of(context)
+                          .push(
                         MaterialPageRoute(
                           builder: (_) => const AddAddressScreen(),
                         ),
-                      );
+                      )
+                          .then((_) {
+                        if (mounted) {
+                          setState(() {
+                            _selectedAddress =
+                                context.read<SettingsProvider>().defaultAddress;
+                          });
+                        }
+                      });
                     },
                   ),
                 ],
               ),
               const SizedBox(height: 12),
-              ...addresses.map(
-                (addr) => ListTile(
-                  contentPadding: EdgeInsets.zero,
-                  leading: Icon(
-                    _selectedAddress?.id == addr.id
-                        ? Icons.radio_button_checked
-                        : Icons.radio_button_off,
-                    color: AppColors.primary,
+              Flexible(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: addresses
+                        .map(
+                          (addr) => ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            leading: Icon(
+                              currentActive?.id == addr.id
+                                  ? Icons.radio_button_checked
+                                  : Icons.radio_button_off,
+                              color: AppColors.primary,
+                            ),
+                            title: Text(
+                              '${addr.fullName} (${addr.type})',
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            subtitle: Text(addr.shortAddress),
+                            onTap: () {
+                              setState(() {
+                                _selectedAddress = addr;
+                              });
+                              Navigator.of(ctx).pop();
+                            },
+                          ),
+                        )
+                        .toList(),
                   ),
-                  title: Text(
-                    '${addr.fullName} (${addr.type})',
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  subtitle: Text(addr.shortAddress),
-                  onTap: () {
-                    setState(() {
-                      _selectedAddress = addr;
-                    });
-                    Navigator.of(ctx).pop();
-                  },
                 ),
               ),
             ],
@@ -98,6 +118,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   Future<void> _handlePlaceOrder() async {
     final cart = context.read<CartProvider>();
     final orderProvider = context.read<OrderProvider>();
+    final settings = context.read<SettingsProvider>();
+    final activeAddress = _selectedAddress ?? settings.defaultAddress;
 
     if (cart.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -109,7 +131,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
       return;
     }
 
-    if (_selectedAddress == null) {
+    if (activeAddress == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Please select or add a delivery address'),
@@ -127,11 +149,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
 
     final order = orderProvider.placeOrder(
       items: cart.cartItemList,
-      subtotal: cart.subtotal,
+      subtotal: cart.discountAmount > 0 ? cart.originalSubtotal : cart.subtotal,
       deliveryFee: cart.deliveryFee,
       discount: cart.discountAmount,
       total: cart.grandTotal,
-      deliveryAddress: _selectedAddress!,
+      deliveryAddress: activeAddress,
       paymentMethod: _selectedPaymentMethod,
     );
 
@@ -162,7 +184,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         title: const Text('Checkout'),
       ),
       body: SafeArea(
-        child: Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -281,7 +306,15 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 MaterialPageRoute(
                                   builder: (_) => const AddAddressScreen(),
                                 ),
-                              );
+                              ).then((_) {
+                                if (mounted) {
+                                  setState(() {
+                                    _selectedAddress = context
+                                        .read<SettingsProvider>()
+                                        .defaultAddress;
+                                  });
+                                }
+                              });
                             },
                           ),
                         ],
@@ -483,7 +516,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ),
                               ),
                               Text(
-                                '${AppConstants.currency}${cart.subtotal.toInt()}',
+                                '${AppConstants.currency}${(cart.discountAmount > 0 ? cart.originalSubtotal : cart.subtotal).toInt()}',
                                 style: const TextStyle(fontSize: 13),
                               ),
                             ],
@@ -594,7 +627,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 
   Widget _buildSectionHeader(String title, bool isDark) {

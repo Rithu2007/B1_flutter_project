@@ -22,7 +22,10 @@ class AddressListScreen extends StatelessWidget {
         title: const Text('My Addresses'),
       ),
       body: SafeArea(
-        child: Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
           children: [
             Expanded(
               child: addresses.isEmpty
@@ -79,6 +82,8 @@ class AddressListScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

@@ -77,70 +77,77 @@ class _SearchScreenState extends State<SearchScreen> {
         ),
       ),
       body: SafeArea(
-        child: _hasSearched
-            ? _searchResults.isEmpty
-                ? Center(
-                    child: EmptyStateWidget(
-                      icon: Icons.search_off_rounded,
-                      title: 'No products found',
-                      description:
-                          'We couldn\'t find any grocery items matching "${_searchController.text}". Try searching for milk, bread, or apples.',
-                      buttonText: 'Clear Search',
-                      onButtonPressed: () {
-                        _searchController.clear();
-                        setState(() {
-                          _hasSearched = false;
-                          _searchResults = [];
-                        });
-                      },
-                    ),
-                  )
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
-                        child: Text(
-                          'Found ${_searchResults.length} results for "${_searchController.text}"',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: isDark
-                                ? AppColors.darkTextSecondary
-                                : AppColors.textSecondary,
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: GridView.builder(
-                          padding: const EdgeInsets.all(16),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 0.72,
-                            crossAxisSpacing: 12,
-                            mainAxisSpacing: 14,
-                          ),
-                          itemCount: _searchResults.length,
-                          itemBuilder: (context, index) {
-                            final product = _searchResults[index];
-                            return ProductCard(
-                              product: product,
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) =>
-                                        ProductDetailsScreen(product: product),
-                                  ),
-                                );
-                              },
-                            );
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 1200),
+            child: _hasSearched
+                ? _searchResults.isEmpty
+                    ? Center(
+                        child: EmptyStateWidget(
+                          icon: Icons.search_off_rounded,
+                          title: 'No products found',
+                          description:
+                              'We couldn\'t find any grocery items matching "${_searchController.text}". Try searching for milk, bread, or apples.',
+                          buttonText: 'Clear Search',
+                          onButtonPressed: () {
+                            _searchController.clear();
+                            setState(() {
+                              _hasSearched = false;
+                              _searchResults = [];
+                            });
                           },
                         ),
-                      ),
-                    ],
-                  )
-            : SingleChildScrollView(
+                      )
+                    : Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(16, 12, 16, 6),
+                            child: Text(
+                              'Found ${_searchResults.length} results for "${_searchController.text}"',
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: isDark
+                                    ? AppColors.darkTextSecondary
+                                    : AppColors.textSecondary,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: GridView.builder(
+                              padding: const EdgeInsets.all(16),
+                              gridDelegate:
+                                  const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 220,
+                                childAspectRatio: 0.66,
+                                crossAxisSpacing: 12,
+                                mainAxisSpacing: 14,
+                              ),
+                              itemCount: _searchResults.length,
+                              itemBuilder: (context, index) {
+                                final product = _searchResults[index];
+                                return ProductCard(
+                                  product: product,
+                                  heroTag: 'search_prod_${product.id}',
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (_) =>
+                                            ProductDetailsScreen(
+                                          product: product,
+                                          heroTag: 'search_prod_${product.id}',
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      )
+                : SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,6 +266,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 ),
               ),
+          ),
+        ),
       ),
     );
   }

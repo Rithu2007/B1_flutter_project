@@ -20,6 +20,9 @@ class CartProvider extends ChangeNotifier {
   double get subtotal =>
       _items.values.fold(0.0, (total, item) => total + item.totalPrice);
 
+  double get originalSubtotal =>
+      _items.values.fold(0.0, (total, item) => total + item.originalTotalPrice);
+
   double get totalSavings =>
       _items.values.fold(0.0, (total, item) => total + item.savings);
 
@@ -71,7 +74,12 @@ class CartProvider extends ChangeNotifier {
 
   void addMultipleItems(List<CartItem> newItems) {
     for (var item in newItems) {
-      addItem(item.product, quantity: item.quantity);
+      if (_items.containsKey(item.product.id)) {
+        _items[item.product.id]!.quantity += item.quantity;
+      } else {
+        _items[item.product.id] =
+            CartItem(product: item.product, quantity: item.quantity);
+      }
     }
     notifyListeners();
   }

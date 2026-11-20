@@ -20,8 +20,8 @@ class CategoriesScreen extends StatelessWidget {
       body: SafeArea(
         child: GridView.builder(
           padding: const EdgeInsets.all(16),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 140,
             childAspectRatio: 0.85,
             crossAxisSpacing: 12,
             mainAxisSpacing: 12,

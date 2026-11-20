@@ -11,10 +11,12 @@ import '../checkout/checkout_screen.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final Product product;
+  final String? heroTag;
 
   const ProductDetailsScreen({
     super.key,
     required this.product,
+    this.heroTag,
   });
 
   @override
@@ -66,7 +68,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -75,7 +80,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: [
                     // Large Image Display
                     Hero(
-                      tag: 'product_img_${product.id}',
+                      tag: widget.heroTag ?? 'product_img_${product.id}',
                       child: Container(
                         width: double.infinity,
                         height: 280,
@@ -498,6 +503,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ],
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

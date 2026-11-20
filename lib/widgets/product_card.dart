@@ -10,11 +10,13 @@ import 'network_or_placeholder_image.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback? onTap;
+  final String? heroTag;
 
   const ProductCard({
     super.key,
     required this.product,
     this.onTap,
+    this.heroTag,
   });
 
   @override
@@ -51,7 +53,7 @@ class ProductCard extends StatelessWidget {
             Stack(
               children: [
                 Hero(
-                  tag: 'product_img_${product.id}',
+                  tag: heroTag ?? 'product_img_${product.id}',
                   child: ClipRRect(
                     borderRadius: const BorderRadius.vertical(
                       top: Radius.circular(15),

@@ -171,7 +171,10 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
         title: const Text('Payment Methods'),
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: SingleChildScrollView(
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,6 +318,8 @@ class _PaymentMethodsScreenState extends State<PaymentMethodsScreen> {
           ),
         ),
       ),
-    );
+    ),
+  ),
+);
   }
 }

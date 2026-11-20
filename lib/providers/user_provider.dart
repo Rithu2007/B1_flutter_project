@@ -88,8 +88,8 @@ class UserProvider extends ChangeNotifier {
     required String email,
     required String phone,
   }) async {
-    if (_currentUser == null) return;
-    _currentUser = _currentUser!.copyWith(
+    final baseUser = _currentUser ?? AppUser.demoUser;
+    _currentUser = baseUser.copyWith(
       name: name,
       email: email,
       phone: phone,
